@@ -34,6 +34,6 @@ class UserNotFoundError(UserError):
 class InactiveUserError(UserError):
     def __init__(self, user_id: int| None = None) -> None:
         super().__init__(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="User is inactive" if user_id is None else f"User with {user_id} is inactive"
         )
