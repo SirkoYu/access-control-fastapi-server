@@ -7,7 +7,8 @@ __all__ = (
     "AccessRule",
     "User",
     "AccessLog",
-    "CurrentPresence"
+    "CurrentPresence",
+    "UserRoleAssociation",
 )
 
 from .base import Base
@@ -19,3 +20,4 @@ from .access_rule import AccessRule
 from .user import User
 from .access_log import AccessLog
 from .current_presence import CurrentPresence
+from. user_role_association import UserRoleAssociation
