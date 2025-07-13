@@ -7,6 +7,10 @@ class RunConfig(BaseModel):
     port: int = 8000
 
 
+class ApiPrefix(BaseModel):
+    prefix: str = "/api"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template",".env",),
@@ -15,6 +19,7 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__"
     ) 
     run: RunConfig = RunConfig()
+    api: ApiPrefix = ApiPrefix()
 
     
 settings = Settings()  # type: ignore
