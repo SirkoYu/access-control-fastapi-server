@@ -1,6 +1,10 @@
+from pathlib import Path
+
 from pydantic import BaseModel, MySQLDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
+BASE_DIR = Path(__file__).parent.parent
 
 class RunConfig(BaseModel):
     host: str = "0.0.0.0"
@@ -27,6 +31,14 @@ class DatabaseConfig(BaseModel):
     }
 
 
+class AuthJWT(BaseModel):
+    public_path: Path = BASE_DIR / "certs" / "public.pem"
+    private_path: Path = BASE_DIR / "certs" / "private.pem"
+    algorithm: str = "RS256"
+    token_expire_minutes: int = 30
+    resfresh_token_expire_days: int = 1
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template",".env",),
@@ -37,6 +49,7 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
+    auth: AuthJWT = AuthJWT()
 
     
 settings = Settings()  # type: ignore
