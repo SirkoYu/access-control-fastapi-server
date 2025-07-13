@@ -6,6 +6,7 @@ __all__ = (
     "Role",
     "AccessRule",
     "User",
+    "AccessLog",
 )
 
 from .base import Base
@@ -15,3 +16,4 @@ from .room import Room
 from .role import Role
 from .access_rule import AccessRule
 from .user import User
+from .access_log import AccessLog
