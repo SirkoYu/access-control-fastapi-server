@@ -5,6 +5,7 @@ __all__ = (
     "Room",
     "Role",
     "AccessRule",
+    "User",
 )
 
 from .base import Base
@@ -13,3 +14,4 @@ from .floor import Floor
 from .room import Room
 from .role import Role
 from .access_rule import AccessRule
+from .user import User
