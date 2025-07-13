@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm, HTTPAuthorizationCredentials
 
 from .auth_schemas import Token
@@ -15,7 +15,7 @@ from .utils import (
     TokenType,
 )
 from .service import get_current_active_user, authenticate_user
-from exceptions.exceptions import InvalidCredentialsError
+from exceptions import exceptions
 
 router = APIRouter(prefix="/auth", tags=["Login"])
 
@@ -24,11 +24,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], sess
     user = await authenticate_user(session=session, email=form_data.username, password=form_data.password)
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise exceptions.IncorectLoginData
     
     payload: dict ={
             "sub": user.email,
@@ -49,13 +45,12 @@ async def refresh_token(
     credentials: HTTPAuthorizationCredentials = Depends(refresh_token_scheme),
 ) -> Token:
     if not credentials:
-        raise InvalidCredentialsError
-
+        raise exceptions.InvalidCredentialsError
+    
     token_data = check_token_with_type(token=credentials.credentials, token_type=TokenType.REFRESH)
-
     user = await get_user_by_email(session, email=token_data.email)
     if not user:
-        raise InvalidCredentialsError
+        raise exceptions.InvalidCredentialsError
     
     access_token = create_token(
         payload={
