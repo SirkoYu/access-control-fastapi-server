@@ -4,7 +4,7 @@ from typing import Annotated
 from pydantic import BaseModel, Field, EmailStr
 from annotated_types import MaxLen, MinLen, Ge
 
-from ..models.access_log import Action
+from models.access_log import Action
 
 
 class Role(BaseModel):
