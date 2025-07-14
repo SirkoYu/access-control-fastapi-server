@@ -20,4 +20,4 @@ from .access_rule import AccessRule
 from .user import User
 from .access_log import AccessLog
 from .current_presence import CurrentPresence
-from. user_role_association import UserRoleAssociation
+from .user_role_association import UserRoleAssociation
