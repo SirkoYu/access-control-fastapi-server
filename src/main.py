@@ -4,9 +4,11 @@ from fastapi.responses import PlainTextResponse
 
 from core.config import settings
 from api import api_router
+from auth.controller import router as auth_router
 
 main_app = FastAPI()
 main_app.include_router(api_router)
+main_app.include_router(auth_router)
 
 @main_app.get(
     "/",
