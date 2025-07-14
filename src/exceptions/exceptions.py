@@ -1,6 +1,13 @@
 from fastapi import HTTPException, status
 
 
+class NotFoundException(HTTPException):
+    def __init__(self, entity: str = "Entity", entity_id: int|None = None):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"{entity} not found" if entity_id is None else f"{entity} with id={entity_id} not found"
+        )
+
 class AuthError(HTTPException):
     pass
 
@@ -25,10 +32,10 @@ class UserError(HTTPException):
 
 
 class UserNotFoundError(UserError):
-    def __init__(self) -> None:
+    def __init__(self, user_id: int|None = None) -> None:
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND, 
-            detail=f"User not found",
+            detail="User not found" if user_id is None else f"User with {user_id!r} not found",
         )
 
 class InactiveUserError(UserError):
