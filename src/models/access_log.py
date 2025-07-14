@@ -1,4 +1,3 @@
-import enum
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Enum, ForeignKey
@@ -6,15 +5,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
 from .mixins import IntIdPkMixin, TimestampMixin
+from src.constants import Action
 
 if TYPE_CHECKING:
     from .room import Room
     from .user import User
-
-
-class Action(enum.StrEnum):
-    enter = "Enter"
-    exit = "Exit"
 
 
 class AccessLog(Base, IntIdPkMixin, TimestampMixin):

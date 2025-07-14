@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from models.access_log import Action
+from src.constants import Action
 from .general_schemas import User, Room
 
 class AccessLogBase(BaseModel):
