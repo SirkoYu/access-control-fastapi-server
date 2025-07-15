@@ -115,3 +115,11 @@ class UserAlreadyExistsException(AlreadyExistsException):
             field_name="email",
             field_value=email
         )
+
+class RoomAlreadyExistsException(AlreadyExistsException):
+    """Raised when room with same unique attributes already exists."""
+    def __init__(self):
+        super().__init__(
+            model_name="Room",
+            status_code=409
+        )
