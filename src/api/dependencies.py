@@ -1,12 +1,16 @@
 from typing import Annotated
 
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from annotated_types import Ge
-from database.core import DBSession
-import crud
-import models
-from exceptions.exceptions import NotFoundException
+
+from src.database.core import get_db
+import src.crud as crud
+import src.models as models
+from src.exceptions.exceptions import NotFoundException
 
 IDField = Annotated[int, Ge(1)]
+DBSession = Annotated[AsyncSession, Depends(get_db)]
 
 async def get_user_by_id(
         sesison: DBSession,

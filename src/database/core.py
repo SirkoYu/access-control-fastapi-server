@@ -22,6 +22,3 @@ AsyncSessionFactory = async_sessionmaker(
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with AsyncSessionFactory() as session:
         yield session
-
-
-DBSession = Annotated[AsyncSession, Depends(get_db)]
