@@ -39,7 +39,7 @@ async def update_access_log_partical(
         session, 
         access_log_in=access_log_in, 
         access_log=access_log,
-        partical=True,
+        partial=True,
     )
 
 @router.delete("/{access_log_id}", status_code=status.HTTP_204_NO_CONTENT)
