@@ -1,3 +1,7 @@
+"""
+CRUD operations for Room model with comprehensive error handling.
+"""
+
 from typing import Sequence
 
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError

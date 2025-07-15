@@ -1,6 +1,6 @@
-'''
-CRUD opreations for User model.
-'''
+"""
+CRUD operations for User model with comprehensive error handling.
+"""
 
 from typing import Sequence
 

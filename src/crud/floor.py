@@ -1,9 +1,14 @@
+"""
+CRUD operations for Floor model with comprehensive error handling.
+"""
+
 from typing import Sequence
 
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy import select
+
 from src.models import Floor
 from src.schemas.floor import (
     FloorCreate,
