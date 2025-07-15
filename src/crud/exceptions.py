@@ -163,3 +163,12 @@ class CurrentPresenceConflictException(AlreadyExistsException):
             detail=f"User {user_id} is already present in room {room_id}",
             status_code=409
         )
+
+class BuildingAlreadyExistsException(AlreadyExistsException):
+    """Raised when building with same unique attributes already exists."""
+    def __init__(self, detail: str|None):
+        super().__init__(
+            model_name="Building",
+            detail=detail,
+            status_code=409
+        )
