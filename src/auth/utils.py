@@ -8,8 +8,8 @@ import jwt
 import bcrypt
 
 from .auth_schemas import TokenData
-from exceptions.exceptions import InvalidCredentialsError
-from core.config import settings
+from .exceptions import InvalidCredentialsError
+from src.core.config import settings
 
 
 class TokenType(enum.StrEnum):

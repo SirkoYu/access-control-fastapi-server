@@ -4,18 +4,18 @@ from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm, HTTPAuthorizationCredentials
 
 from .auth_schemas import Token
-from database.core import DBSession
-from models import User
-from schemas.user import UserOut
-from crud.user import get_user_by_email
+from src.models import User
+from src.schemas.user import UserOut
+from src.crud.user import get_user_by_email
 from .utils import (
     refresh_token_scheme,
     check_token_with_type,
     create_token,
     TokenType,
 )
+from .dependencies import DBSession
 from .service import get_current_active_user, authenticate_user
-from exceptions import exceptions
+from .exceptions import IncorectLoginData, InvalidCredentialsError
 
 router = APIRouter(prefix="/auth", tags=["Login"])
 
@@ -36,7 +36,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], sess
     user = await authenticate_user(session=session, email=form_data.username, password=form_data.password)
 
     if not user:
-        raise exceptions.IncorectLoginData
+        raise IncorectLoginData
     
     payload: dict ={
             "sub": user.email,
@@ -82,7 +82,7 @@ async def refresh_token(
     token_data = check_token_with_type(token=credentials.credentials, token_type=TokenType.REFRESH)
     user = await get_user_by_email(session, email=token_data.email)
     if not user:
-        raise exceptions.InvalidCredentialsError
+        raise InvalidCredentialsError
     
     access_token = create_token(
         payload={
