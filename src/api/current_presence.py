@@ -9,7 +9,7 @@ from src.models import CurrentPresence
 import src.schemas.current_presence as schemas  
 from .dependencies import DBSession, get_current_presence_by_id
 
-router = APIRouter(prefix="/current_presence", tags=["Current Presence"], dependencies=Depends(get_current_active_user))
+router = APIRouter(prefix="/current_presence", tags=["Current Presence"], dependencies=[Depends(get_current_active_user)])
 
 router.post("/", response_model=schemas.CurrentPresenceOut, status_code=status.HTTP_201_CREATED)
 async def create_current_presence(
