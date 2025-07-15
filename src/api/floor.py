@@ -3,12 +3,13 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
+from src.auth.service import get_current_active_admin_user
 from src.crud import floor as crud
 from src.models import Floor
 import src.schemas.floor as schemas 
 from .dependencies import DBSession, get_floor_by_id
 
-router = APIRouter(prefix="/floors", tags=["Floors"])
+router = APIRouter(prefix="/floors", tags=["Floors"], dependencies=[Depends(get_current_active_admin_user)])
 
 @router.post("/", response_model=schemas.FloorOut, status_code=status.HTTP_201_CREATED)
 async def create_floor(
@@ -31,7 +32,7 @@ async def update_floor_partical(
     floor_in: schemas.FloorUpdatePartical,
     floor: Floor = Depends(get_floor_by_id)
 ):
-    return await crud.update_floor(session=session, floor_in= floor_in, floor=floor, partical=True)
+    return await crud.update_floor(session=session, floor_in= floor_in, floor=floor, partial=True)
 
 @router.delete("/{floor_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_floor(

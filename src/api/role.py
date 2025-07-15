@@ -3,12 +3,13 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
+from src.auth.service import get_current_active_admin_user
 from src.crud import role as role_crud
 from src.models import Role
 import src.schemas.role as schemas
 from .dependencies import DBSession, get_role_by_id
 
-router = APIRouter(prefix="/roles", tags=["Roles"])
+router = APIRouter(prefix="/roles", tags=["Roles"], dependencies=[Depends(get_current_active_admin_user)])
 
 @router.post("/", response_model=schemas.RoleOut, status_code=status.HTTP_201_CREATED)
 async def create_role(
@@ -31,7 +32,7 @@ async def update_role_partical(
     role_in: schemas.RoleUpdatePartical,
     role: Role = Depends(get_role_by_id),
 ):
-    return await role_crud.update_role(session, role=role, role_in=role_in, partical=True)
+    return await role_crud.update_role(session, role=role, role_in=role_in, partial=True)
 
 @router.delete("/{role_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_role(

@@ -3,12 +3,13 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
+from src.auth.service import get_current_active_admin_user
 from src.crud import room as room_crud
 from src.models import Room
 import src.schemas.room as schemas
 from .dependencies import DBSession, IDField, get_room_by_id
 
-router = APIRouter(prefix="/rooms", tags=["Rooms"])
+router = APIRouter(prefix="/rooms", tags=["Rooms"], dependencies=[Depends(get_current_active_admin_user)])
 
 @router.post("/", response_model=schemas.RoomOut, status_code=status.HTTP_201_CREATED)
 async def create_room_(
@@ -31,7 +32,7 @@ async def update_room_partical(
     room_in: schemas.RoomUpdatePartical,
     room: Room = Depends(get_room_by_id),
 ):
-    return await room_crud.update_room(session, room, room_in, partical=True)
+    return await room_crud.update_room(session, room, room_in, partial=True)
 
 @router.delete("/{room_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_room(

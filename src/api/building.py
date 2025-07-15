@@ -3,12 +3,13 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
+from src.auth.service import get_current_active_admin_user
 from src.crud import building as crud
 from src.models import Building
 import src.schemas.building as schemas  
 from .dependencies import DBSession, get_building_by_id
 
-router = APIRouter(prefix="/buildings", tags=["Buildings"])
+router = APIRouter(prefix="/buildings", tags=["Buildings"], dependencies=[Depends(get_current_active_admin_user)])
 
 @router.post("/", response_model=schemas.BuildingOut)
 async def create_building(
@@ -39,7 +40,7 @@ async def update_building_partical(
         session, 
         building_in=building_in, 
         building=building,
-        partical=True
+        partial=True
     )
 
 @router.delete("/{building_id}", status_code=status.HTTP_204_NO_CONTENT)

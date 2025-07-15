@@ -39,7 +39,7 @@ async def update_current_presence_partical(
         session=session, 
         current_presence_in=current_presence_in, 
         current_presence=current_presence,
-        partical=True,
+        partial=True,
     )
 
 @router.delete("/{current_presence_id}", status_code=status.HTTP_404_NOT_FOUND)

@@ -3,12 +3,13 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
+from src.auth.service import get_current_active_admin_user
 from src.crud import access_rule as crud
 from src.models import AccessRule
 import src.schemas.access_rule as schemas
 from .dependencies import DBSession, get_access_rule_by_id
 
-router = APIRouter(prefix="/access_rule", tags=["Access Rules"])
+router = APIRouter(prefix="/access_rule", tags=["Access Rules"], dependencies=[Depends(get_current_active_admin_user)])
 
 @router.post("/", response_model=schemas.AccessRuleOut, status_code=status.HTTP_201_CREATED)
 async def create_access_rule(
@@ -39,7 +40,7 @@ async def update_accesss_rule_partical(
         session=session,
         access_rule_in=access_rule_in,
         access_rule=access_rule,
-        partical=True,
+        partial=True,
     )
 
 @router.delete("/{access_rule_id}", status_code=status.HTTP_204_NO_CONTENT)
