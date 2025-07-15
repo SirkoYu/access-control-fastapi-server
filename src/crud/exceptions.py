@@ -172,3 +172,21 @@ class BuildingAlreadyExistsException(AlreadyExistsException):
             detail=detail,
             status_code=409
         )
+
+class AccessRuleAlreadyExistsException(AlreadyExistsException):
+    """Raised when access rule for this room and role already exists."""
+    def __init__(self, room_id: int, role_id: int):
+        super().__init__(
+            model_name="AccessRule",
+            detail=f"Access rule for room {room_id} and role {role_id} already exists",
+            status_code=409
+        )
+
+class AccessRuleTimeConflictException(AlreadyExistsException):
+    """Raised when access rule time conflicts with existing rule."""
+    def __init__(self, room_id: int, role_id: int):
+        super().__init__(
+            model_name="AccessRule",
+            detail=f"Time conflict for access rule (room {room_id}, role {role_id})",
+            status_code=409
+        )
