@@ -15,6 +15,7 @@ class CrudException(AppException):
         original_exc: Exception | None = None,
         log_error: bool = True,
     ):
+        self.model_name = model_name
         super().__init__(
             detail=detail,
             message=message,
@@ -72,11 +73,12 @@ class CreateException(CrudException):
     def __init__(
         self,
         model_name: str,
+        detail: str| None = None,
         original_exc: Exception | None = None
     ):
         super().__init__(
             model_name=model_name,
-            detail=f"Failed to create {model_name}",
+            detail=f"Failed to create {model_name}" if detail is None else detail,
             original_exc=original_exc
         )
 
@@ -189,4 +191,12 @@ class AccessRuleTimeConflictException(AlreadyExistsException):
             model_name="AccessRule",
             detail=f"Time conflict for access rule (room {room_id}, role {role_id})",
             status_code=409
+        )
+
+class AccessLogInvalidReferancesException(CreateException):
+    def __init__(self, original_exc):
+        super().__init__(
+            model_name="AccessLog",
+            detail="Failed to create access log - invalid references",
+            original_exc=original_exc
         )
