@@ -1,14 +1,32 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import PlainTextResponse
 
-from core.config import settings
-from api import api_router
-from auth.controller import router as auth_router
+from src.core.config import settings
+from src.api import api_router
+from src.database.core import engine
+from src.auth.controller import router as auth_router
+from src.exceptions.handlers import register_exception_handlers
+from src.logger import setup_logger
 
-main_app = FastAPI()
+setup_logger("MainApp")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    await engine.dispose()
+
+
+main_app = FastAPI(lifespan=lifespan)
+
+
+register_exception_handlers (main_app)
+
 main_app.include_router(api_router)
 main_app.include_router(auth_router)
+
 
 @main_app.get(
     "/",
