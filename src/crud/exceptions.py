@@ -145,3 +145,21 @@ class FloorAlreadyExistsException(AlreadyExistsException):
             detail=f"Floor with number {floor_number} in building {building_id} already exists",
             status_code=409
         )
+        
+class CurrentPresenceAlreadyExistsException(AlreadyExistsException):
+    """Raised when current presence record for user already exists."""
+    def __init__(self, user_id: int):
+        super().__init__(
+            model_name="CurrentPresence",
+            detail=f"Current presence for user with id={user_id} already exists",
+            status_code=409
+        )
+
+class CurrentPresenceConflictException(AlreadyExistsException):
+    """Raised when user is already registered in another room."""
+    def __init__(self, user_id: int, room_id: int):
+        super().__init__(
+            model_name="CurrentPresence",
+            detail=f"User {user_id} is already present in room {room_id}",
+            status_code=409
+        )
