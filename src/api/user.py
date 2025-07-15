@@ -32,7 +32,7 @@ async def update_user_partical(
     user_in: schemas.UserUpdatePatrical,
     user: User = Depends(get_user_by_id),
 ):
-    return await user_crud.update_user(session, user_in, user, partical=True)
+    return await user_crud.update_user(session, user_in, user, partial=True)
     
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(    
