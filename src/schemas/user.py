@@ -18,6 +18,7 @@ class UserBase(BaseModel):
     last: str_max32_min3
     email: EmailStr
     is_active: bool = True
+    is_admin: bool = False
 
 class UserCreate(UserBase):
     password: Annotated[str, MaxLen(64)]
@@ -30,6 +31,7 @@ class UserUpdatePatrical(BaseModel):
     last: str_max32_min3 | None = None
     email: EmailStr | None = None
     password: Annotated[str| None, MaxLen(64)] = None
+    is_admin: bool|None = None
     is_active: bool|None = None
     
 class UserOut(UserBase):

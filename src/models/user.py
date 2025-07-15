@@ -18,6 +18,7 @@ class User(Base, IntIdPkMixin):
     email: Mapped[str] = mapped_column(String(64), unique=True)
     password_hash: Mapped[str] = mapped_column(String(64))
     is_active: Mapped[bool] = mapped_column(default=True, server_default="1")
+    is_admin: Mapped[bool] = mapped_column(default=False, server_default="0")
 
     roles: Mapped[list["Role"]] = relationship(secondary="user_role_association", back_populates="users") # type: ignore
     access_logs: Mapped[list["AccessLog"]] = relationship(back_populates="user")
