@@ -25,3 +25,10 @@ class InactiveUserError(AuthError):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User is inactive" if user_id is None else f"User with {user_id} is inactive"
         )
+
+class AccessDeniedError(AuthError):
+    def __init__(self, user_id: int):
+        super().__init__(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied" if user_id is None else f"Access denied for user with id={user_id}"
+        )
