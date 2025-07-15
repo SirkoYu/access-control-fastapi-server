@@ -200,3 +200,22 @@ class AccessLogInvalidReferancesException(CreateException):
             detail="Failed to create access log - invalid references",
             original_exc=original_exc
         )
+
+class OperationalException(CrudException):
+    def __init__(self, 
+        model_name: str,
+        message: str | None = None,
+        original_exc: Exception | None = None, ):
+
+        self.message = message or f"OperationalError while operaions with {model_name}"
+
+        if message is not None and original_exc is not None:
+            message = str(original_exc)
+
+        super().__init__(
+            detail="Internal Server Error",
+            message=message, 
+            model_name=model_name, 
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            original_exc=original_exc,
+        )
