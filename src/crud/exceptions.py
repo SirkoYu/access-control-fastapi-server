@@ -123,3 +123,13 @@ class RoomAlreadyExistsException(AlreadyExistsException):
             model_name="Room",
             status_code=409
         )
+
+class RoleAlreadyExistsException(AlreadyExistsException):
+    """Raised when role with same name already exists."""
+    def __init__(self, name: str):
+        super().__init__(
+            model_name="Role",
+            field_name="name",
+            field_value=name,
+            status_code=409,
+        )
