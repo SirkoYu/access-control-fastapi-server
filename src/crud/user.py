@@ -4,14 +4,16 @@ CRUD opreations for User model.
 
 from typing import Sequence
 
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy import select
 from pydantic import EmailStr
 from auth.utils import hash_password
 
-from models import User
-from schemas.user import (
+from src.auth.utils import hash_password
+from src.models import User
+from src.schemas.user import (
     UserCreate,
     UserUpdate,
     UserUpdatePatrical,

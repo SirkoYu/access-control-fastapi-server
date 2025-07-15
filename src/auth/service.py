@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 
 from .utils import verify_password, check_token_with_type, TokenType, oauth2_scheme
 from schemas.user import UserOut

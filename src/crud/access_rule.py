@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import AccessRule
-from schemas.access_rule import (
+from src.models import AccessRule
+from src.schemas.access_rule import (
     AccessRuleCreate,
     AccessRuleUpdate,
     AccessRuleUpdatePartical,

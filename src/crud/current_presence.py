@@ -3,8 +3,8 @@ from typing import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 from sqlalchemy import select
-from models import CurrentPresence
-from schemas.current_presence import (
+from src.models import CurrentPresence
+from src.schemas.current_presence import (
     CurrentPresenceCreate,
     CurrentPresenceUpdate,
     CurrentPresenceUpdatePartical,

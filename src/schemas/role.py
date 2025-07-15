@@ -8,7 +8,6 @@ from .general_schemas import (
     AccessRule
 )
 
-
 class RoleBase(BaseModel):
     name: Annotated[str, MaxLen(48)]
     description: str|None

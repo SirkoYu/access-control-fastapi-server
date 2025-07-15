@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from core.config import settings
+from src.core.config import settings
 from .user import router as users_router
 from .room import router as rooms_router
 from .role import router as role_router

@@ -1,10 +1,10 @@
 from datetime import datetime, time
 from typing import Annotated
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 from annotated_types import MaxLen, MinLen, Ge
 
-from models.access_log import Action
+from src.constants import Action
 
 
 class Role(BaseModel):

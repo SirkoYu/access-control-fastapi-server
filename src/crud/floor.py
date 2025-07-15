@@ -3,8 +3,8 @@ from typing import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy import select
-from models import Floor
-from schemas.floor import (
+from src.models import Floor
+from src.schemas.floor import (
     FloorCreate,
     FloorUpdate,
     FloorUpdatePartical,

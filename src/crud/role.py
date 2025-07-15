@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy import select
 
-from models import Role
-from schemas.role import (
+from src.models import Role
+from src.schemas.role import (
     RoleCreate,
     RoleUpdate,
     RoleUpdatePartical,

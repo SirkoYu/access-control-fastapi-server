@@ -3,8 +3,8 @@ from typing import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy import select
-from models import Building
-from schemas.building import (
+from src.models import Building
+from src.schemas.building import (
     BuildingCreate,
     BuildingUpdate,
     BuildingUpdatePartical,

@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy import select, Result
 
-from models import Room
-from schemas.room import (
+from src.models import Room
+from src.schemas.room import (
     RoomCreate,
     RoomUpdate,
     RoomUpdatePartical

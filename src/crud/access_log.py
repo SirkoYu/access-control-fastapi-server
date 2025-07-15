@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import AccessLog
-from schemas.access_log import (
+from src.models import AccessLog
+from src.schemas.access_log import (
     AccessLogCreate,
     AccessLogUpdate,
     AccessLogUpdatePartical,
