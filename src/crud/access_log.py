@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, OperationalError
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -39,7 +39,9 @@ async def create_access_log(
     except IntegrityError as e:
         await session.rollback()
         raise exceptions.AccessLogInvalidReferancesException(e) from e
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="AccessLog", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.CreateException(
             model_name="AccessLog",
@@ -73,7 +75,9 @@ async def update_access_log(
         await session.commit()
         await session.refresh(access_log)
         return access_log
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="AccessLog", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.UpdateException(
             model_name="AccessLog",
@@ -98,7 +102,9 @@ async def delete_access_log(
     try:
         await session.delete(access_log)
         await session.commit()
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="AccessLog", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.DeleteException(
             model_name="AccessLog",

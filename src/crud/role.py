@@ -4,7 +4,7 @@ CRUD operations for Role model with comprehensive error handling.
 
 from typing import Sequence
 
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy import select
@@ -47,7 +47,9 @@ async def create_role(
         if "unique constraint" in str(e).lower() and "name" in str(e).lower():
             raise exceptions.RoleAlreadyExistsException(name=role_in.name) from e
         raise exceptions.CreateException(model_name="Role", original_exc=e) from e
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Role", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.CreateException(model_name="Role", original_exc=e) from e
 
@@ -78,7 +80,10 @@ async def update_role(
         await session.commit()
         await session.refresh(role)
         return role
-    except SQLAlchemyError as e:
+
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Role", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.UpdateException(
             model_name="Role",
@@ -103,7 +108,9 @@ async def delete_role(
     try:
         await session.delete(role)
         await session.commit()
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Role", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.DeleteException(
             model_name="Role",

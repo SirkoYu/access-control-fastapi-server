@@ -4,7 +4,7 @@ CRUD operations for Building model with comprehensive error handling.
 
 from typing import Sequence
 
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy import select
@@ -48,7 +48,9 @@ async def create_building(
                 detail="Building with these attributes already exists"
             ) from e
         raise exceptions.CreateException(model_name="Building", original_exc=e) from e
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Building", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.CreateException(model_name="Building", original_exc=e) from e
 
@@ -79,7 +81,9 @@ async def update_building(
         await session.commit()
         await session.refresh(building)
         return building
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Building", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.UpdateException(
             model_name="Building",
@@ -104,7 +108,9 @@ async def delete_building(
     try:
         await session.delete(building)
         await session.commit()
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Building", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.DeleteException(
             model_name="Building",

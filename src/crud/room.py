@@ -4,7 +4,7 @@ CRUD operations for Room model with comprehensive error handling.
 
 from typing import Sequence
 
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy import select
@@ -46,7 +46,9 @@ async def create_room(
         if "unique constraint" in str(e).lower():
             raise exceptions.RoomAlreadyExistsException() from e
         raise exceptions.CreateException(model_name="Room", original_exc=e) from e
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Room", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.CreateException(model_name="Room", original_exc=e) from e
 
@@ -78,7 +80,9 @@ async def update_room(
         await session.commit()
         await session.refresh(room)
         return room
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Room", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.UpdateException(
             model_name="Room",
@@ -104,7 +108,9 @@ async def delete_room(
     try:
         await session.delete(room)
         await session.commit()
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Room", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.DeleteException(
             model_name="Room",

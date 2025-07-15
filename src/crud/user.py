@@ -4,7 +4,7 @@ CRUD operations for User model with comprehensive error handling.
 
 from typing import Sequence
 
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy import select
@@ -49,7 +49,9 @@ async def create_user(
         if "email" in str(e).lower():
             raise exceptions.UserAlreadyExistsException(email=user_in.email) from e
         raise exceptions.CreateException(model_name="User", original_exc=e) from e
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="User", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.CreateException(model_name="User", original_exc=e) from e
 
@@ -84,7 +86,9 @@ async def update_user(
         await session.commit()
         await session.refresh(user)
         return user
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="User", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.UpdateException(
             model_name="User",
@@ -110,7 +114,9 @@ async def delete_user(
     try:
         await session.delete(user)
         await session.commit()
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="User", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.DeleteException(
             model_name="User",

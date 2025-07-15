@@ -4,7 +4,7 @@ CRUD operations for Floor model with comprehensive error handling.
 
 from typing import Sequence
 
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy import select
@@ -50,7 +50,9 @@ async def create_floor(
                 building_id=floor_in.building_id
             ) from e
         raise exceptions.CreateException(model_name="Floor", original_exc=e) from e
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Floor", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.CreateException(model_name="Floor", original_exc=e) from e
 
@@ -81,7 +83,9 @@ async def update_floor(
         await session.commit()
         await session.refresh(floor)
         return floor
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Floor", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.UpdateException(
             model_name="Floor",
@@ -106,7 +110,9 @@ async def delete_floor(
     try:
         await session.delete(floor)
         await session.commit()
-    except SQLAlchemyError as e:
+    except OperationalError as e:
+        raise exceptions.OperationalException(model_name="Floor", original_exc=e)
+    except DatabaseError as e:
         await session.rollback()
         raise exceptions.DeleteException(
             model_name="Floor",
