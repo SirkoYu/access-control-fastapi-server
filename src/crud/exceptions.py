@@ -51,14 +51,14 @@ class AlreadyExistsException(CrudException):
     def __init__(
         self,
         model_name: str,
-        field_name: str,
-        field_value: Any,
+        field_name: str|None = None,
+        field_value: Any = None,
         status_code: int = status.HTTP_409_CONFLICT,
         log_error: bool = False
     ):
         super().__init__(
             model_name=model_name,
-            detail=f"{model_name} with {field_name}={field_value} already exists",
+            detail=f"{model_name} with {field_name}={field_value} already exists" if field_name is not None else f"{model_name} with this fields already exists",
             status_code=status_code,
             log_error=log_error
         )
