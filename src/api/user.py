@@ -57,7 +57,7 @@ async def get_user_with_roles(
 ):
     user = await user_crud.get_user_with_roles(session, user_id)
     if not user:
-        raise UserNotFoundError
+        raise NotFoundException("User", user_id)
     return user
 
 @router.get("/user-with-current-presence/{user_id}", response_model=schemas.UserWithCurrentPresence)
@@ -67,7 +67,7 @@ async def get_user_with_current_presence(
 ):
     user = await user_crud.get_user_with_current_presence(session, user_id)
     if not user:
-        raise UserNotFoundError
+        raise NotFoundException("User", user_id)
     return user
 
 @router.get("/user-with-access_logs/{user_id}", response_model=schemas.UserWithAccessLogs)
@@ -77,7 +77,7 @@ async def get_user_with_access_logs(
 ):
     user = await user_crud.get_user_with_accesslogs(session, user_id)
     if not user:
-        raise UserNotFoundError
+        raise NotFoundException("User", user_id)
     return user
 
 @router.get("/users-with-roles", response_model=list[schemas.UserWithRoles])
@@ -108,7 +108,7 @@ async def get_users_with_access_logs(
     return users
 
 @router.get("/{user_id}", response_model=schemas.UserOut)
-async def get_user_with_id(
+async def get_user_using_id(
     user: User = Depends(get_user_by_id)
 ):
     return user
