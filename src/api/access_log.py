@@ -3,12 +3,13 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
+from src.auth.service import get_current_active_user
 from src.crud import access_log as crud
 from src.models import AccessLog
 import src.schemas.access_log as schemas
 from .dependencies import DBSession, get_access_log_by_id
 
-router = APIRouter(prefix="/access-log", tags=["Access Logs"])
+router = APIRouter(prefix="/access-log", tags=["Access Logs"], dependencies=[Depends(get_current_active_user)])
 
 @router.post("/", response_model=schemas.AccessLogOut, status_code=status.HTTP_201_CREATED)
 async def create_access_log(
