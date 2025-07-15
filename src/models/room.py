@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, String, UniqueConstraint
 
 from .base import Base
 from .mixins import IntIdPkMixin
@@ -21,3 +21,7 @@ class Room(Base, IntIdPkMixin):
     access_logs: Mapped[list["AccessLog"]] = relationship(back_populates="room")
     access_rules: Mapped[list["AccessRule"]] = relationship(back_populates="room")
     current_presence: Mapped[list["CurrentPresence"]] = relationship(back_populates="room")
+
+    __table_args__ = (
+        UniqueConstraint("floor_id", "name"),
+    )
