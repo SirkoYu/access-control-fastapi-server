@@ -1,15 +1,13 @@
 from typing import Annotated
 from annotated_types import Ge
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status
 
-from crud import user as user_crud
-from exceptions.exceptions import UserNotFoundError
-from database.core import DBSession
-from models import User
-import schemas.user as schemas
-from .dependencies import get_user_by_id, IDField
+from src.crud import user as user_crud
+from src.exceptions.exceptions import NotFoundException
+from src.models import User
+import src.schemas.user as schemas
+from .dependencies import DBSession, get_user_by_id, IDField
 
 router = APIRouter(prefix="/user", tags=["Users"])
 

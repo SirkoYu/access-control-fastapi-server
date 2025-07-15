@@ -3,11 +3,10 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
-from database.core import DBSession
-from crud import role as role_crud
-from models import Role
-import schemas.role as schemas
-from .dependencies import get_role_by_id
+from src.crud import role as role_crud
+from src.models import Role
+import src.schemas.role as schemas
+from .dependencies import DBSession, get_role_by_id
 
 router = APIRouter(prefix="/roles", tags=["Roles"])
 

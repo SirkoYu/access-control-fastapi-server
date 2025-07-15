@@ -3,11 +3,10 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
-from database.core import DBSession
-from crud import room as room_crud
-from models import Room
-import schemas.room as schemas
-from .dependencies import IDField, get_room_by_id
+from src.crud import room as room_crud
+from src.models import Room
+import src.schemas.room as schemas
+from .dependencies import DBSession, IDField, get_room_by_id
 
 router = APIRouter(prefix="/rooms", tags=["Rooms"])
 

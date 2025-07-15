@@ -3,11 +3,10 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
-from database.core import DBSession
-from crud import current_presence as crud
-from models import CurrentPresence
-import schemas.current_presence as schemas  
-from .dependencies import get_current_presence_by_id
+from src.crud import current_presence as crud
+from src.models import CurrentPresence
+import src.schemas.current_presence as schemas  
+from .dependencies import DBSession, get_current_presence_by_id
 
 router = APIRouter(prefix="/current_presence", tags=["Current Presence"])
 

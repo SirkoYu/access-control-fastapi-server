@@ -3,11 +3,10 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
-from database.core import DBSession
-from crud import access_rule as crud
-from models import AccessRule
-import schemas.access_rule as schemas
-from .dependencies import get_access_rule_by_id
+from src.crud import access_rule as crud
+from src.models import AccessRule
+import src.schemas.access_rule as schemas
+from .dependencies import DBSession, get_access_rule_by_id
 
 router = APIRouter(prefix="/access_rule", tags=["Access Rules"])
 

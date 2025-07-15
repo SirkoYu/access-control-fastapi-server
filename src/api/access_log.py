@@ -3,12 +3,10 @@ from annotated_types import Ge
 
 from fastapi import Depends, APIRouter, status
 
-from database.core import DBSession
-from crud import access_log as crud
-from models import AccessLog
-import schemas.access_log as schemas
-
-from .dependencies import get_access_log_by_id
+from src.crud import access_log as crud
+from src.models import AccessLog
+import src.schemas.access_log as schemas
+from .dependencies import DBSession, get_access_log_by_id
 
 router = APIRouter(prefix="/access-log", tags=["Access Logs"])
 
