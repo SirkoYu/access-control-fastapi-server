@@ -5,7 +5,7 @@ from fastapi import Depends
 from .utils import verify_password, check_token_with_type, TokenType, oauth2_scheme
 from src.schemas.user import UserOut
 from src.crud.user import get_user_by_email
-from .exceptions import InvalidCredentialsError, InactiveUserError
+from .exceptions import InvalidCredentialsError, InactiveUserError, AccessDeniedError
 from .dependencies import DBSession
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,3 +30,8 @@ async def get_current_active_user(current_user: Annotated[UserOut, Depends(get_c
     if not current_user.is_active:
         raise InactiveUserError(user_id=current_user.id)
     return current_user
+
+async def get_current_active_admin_user(current_active_user: Annotated[UserOut, Depends(get_current_active_user)]):
+    if not current_active_user.is_admin:
+        raise AccessDeniedError(user_id=current_active_user.id)
+    return current_active_user
