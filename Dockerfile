@@ -10,9 +10,14 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY ./poetry.lock ./pyproject.toml ./
-
 RUN poetry install
 
 COPY . .
 
 EXPOSE 8000
+
+RUN chmod +x ./prestart.sh
+
+ENTRYPOINT [ "./prestart.sh" ]
+
+CMD [ "python", "-m", "src.main" ]

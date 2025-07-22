@@ -29,7 +29,6 @@ services:
         condition: service_healthy
     networks:
       - mysql_network
-    command: sh -c "alembic upgrade head && python -m src.main"
 
 networks:
   mysql_network:
