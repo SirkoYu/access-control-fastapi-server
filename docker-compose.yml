@@ -10,8 +10,8 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 5s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
       timeout: 5s
       retries: 5
     volumes:
@@ -19,11 +19,22 @@ services:
     networks:
       - mysql_network
   app:
-    env_file:
-      - .env
     build: .
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /app/src
+        - action: rebuild
+          path: ./alembic
+          target: /app/alembic
+        - action: rebuild
+          path: ./poetry.lock
     ports:
       - "8000:8000"
+    environment:
+      APP_CONFIG__DB__URL: mysql+aiomysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}
+      APP_CONFIG__DB__ECHO: 0
     depends_on:
       db:
         condition: service_healthy
